@@ -4,3 +4,6 @@
 *.tfstate
 *.tfstate.*
 eval.auto.tfvars
+
+docs/learnings-log.md
+docs/environment.md
