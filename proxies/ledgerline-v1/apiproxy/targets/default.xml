@@ -1,0 +1,8 @@
+<TargetEndpoint name="default">
+    <HTTPTargetConnection>
+        <LoadBalancer>
+            <Server name="ledgerline-backend"/>
+        </LoadBalancer>
+        <Path>/v1</Path>
+    </HTTPTargetConnection>
+</TargetEndpoint>
