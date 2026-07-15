@@ -1,6 +1,6 @@
 <ProxyEndpoint name="default">
     <HTTPProxyConnection>
-        <BasePath>/ledgerline/v1</BasePath>
+        <BasePath>/ledgerline</BasePath>
     </HTTPProxyConnection>
     <RouteRule name="default">
         <TargetEndpoint>default</TargetEndpoint>

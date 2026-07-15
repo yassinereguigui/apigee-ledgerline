@@ -1,9 +1,15 @@
 .DS_Store
 .env
 .env.*
+
+# Terraform (ephemeral LB) — generated / machine-specific, never committed.
+# NOTE: .terraform.lock.hcl is intentionally NOT ignored (commit it to pin provider versions).
+.terraform/
 *.tfstate
 *.tfstate.*
 eval.auto.tfvars
+teardown.log
 
+# Internal working notes — not for the public repo.
 docs/learnings-log.md
 docs/environment.md
