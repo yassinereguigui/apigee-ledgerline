@@ -1,0 +1,8 @@
+<AssignMessage name="AM-StripAuth">
+    <Remove>
+        <Headers>
+            <Header name="Authorization"/>
+        </Headers>
+    </Remove>
+    <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+</AssignMessage>

@@ -1,0 +1,8 @@
+<ExtractVariables name="EV-ExtractKey">
+    <Source>request</Source>
+    <Header name="Authorization">
+        <Pattern ignoreCase="true">Bearer {apikey}</Pattern>
+    </Header>
+    <VariablePrefix>client</VariablePrefix>
+    <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+</ExtractVariables>
