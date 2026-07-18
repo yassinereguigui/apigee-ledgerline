@@ -1,0 +1,5 @@
+<SharedFlow name="default">
+    <Step><Name>EV-ExtractKey</Name></Step>
+    <Step><Name>VA-VerifyKey</Name></Step>
+    <Step><Name>AM-StripAuth</Name></Step>
+</SharedFlow>

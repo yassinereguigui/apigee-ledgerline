@@ -24,7 +24,10 @@ jobs:
       - name: apigeelint
         run: |
           npm install -g apigeelint@2.85.1
-          for d in proxies/*/apiproxy; do apigeelint -s "$d" -f table; done
+          for d in proxies/*/apiproxy sharedflows/*/sharedflowbundle; do 
+            [ -e "$d" ] || continue
+            apigeelint -s "$d" -f table; 
+          done
 
   deploy:
     needs: lint
@@ -52,9 +55,9 @@ jobs:
 
       - name: Deploy changed proxies
         run: |
-          # Manual rus forces a deploy of ALL proxies
+          # Manual run forces a deploy of everything (sharedflows then proxies)
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            echo "Manual run -> Deploying all proxies"
+            echo "Manual run -> Deploying all artifacts"
             bash scripts/deploy.sh "$ENV"
             exit 0
           fi
@@ -64,13 +67,15 @@ jobs:
             base="$(git rev-parse HEAD^)"
           fi
 
-          changed=$(git diff --name-only "$base" "$GITHUB_SHA" -- proxies | cut -d/ -f2 | sort -u)
-          if [ -z "$changed" ]; then
-            echo "No proxy changes -> nothing to deploy"
+          changed_sf=$(git diff --name-only "$base" "$GITHUB_SHA" -- sharedflows | cut -d/ -f2 | sort -u)
+          changed_proxy=$(git diff --name-only "$base" "$GITHUB_SHA" -- proxies | cut -d/ -f2 | sort -u)
+
+          if [ -z "$changed_sf" ] && [ -z "$changed_proxy" ]; then
+            echo "No sharedflow or proxy changes -> nothing to deploy"
             exit 0
           fi
 
-          echo "Changed proxies:"; echo "$changed"
-          echo "$changed" | while read -r p; do
-            bash scripts/deploy.sh "$ENV" "$p"
+          for a in $changed_sf $changed_proxy; do
+            echo "Deploying: $a"
+            bash scripts/deploy.sh "$ENV" "$a"
           done
