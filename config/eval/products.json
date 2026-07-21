@@ -1,0 +1,57 @@
+[
+  {
+    "name": "ledgerline-basic",
+    "displayName": "Ledgerline Basic (read-only)",
+    "approvalType": "auto",
+    "attributes": [
+      {
+        "name": "access",
+        "value": "internal"
+      }
+    ],
+    "environments": [
+      "eval"
+    ],
+    "operationGroup": {
+      "operationConfigs": [
+        {
+          "apiSource": "ledgerline-v1",
+          "operations": [
+            {
+              "resource": "/v1/**",
+              "methods": [
+                "GET"
+              ]
+            }
+          ],
+          "quota": {
+            "limit": "1000",
+            "interval": "1",
+            "timeUnit": "day"
+          }
+        }
+      ],
+      "operationConfigType": "proxy"
+    }
+  },
+  {
+    "name": "ledgerline-pro",
+    "displayName": "Ledgerline Pro (full access)",
+    "approvalType": "auto",
+    "attributes": [
+      {
+        "name": "access",
+        "value": "partner"
+      }
+    ],
+    "environments": [
+      "eval"
+    ],
+    "proxies": [
+      "ledgerline-v1"
+    ],
+    "quota": "100000",
+    "quotaInterval": "1",
+    "quotaTimeUnit": "day"
+  }
+]
