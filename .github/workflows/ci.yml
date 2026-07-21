@@ -53,7 +53,7 @@ jobs:
           curl -s https://raw.githubusercontent.com/apigee/apigeecli/main/downloadLatest.sh | bash
           echo "$HOME/.apigeecli/bin" >> "$GITHUB_PATH"
 
-      - name: Deploy changed proxies
+      - name: Deploy changed artifacts
         run: |
           # Manual run forces a deploy of everything (sharedflows then proxies)
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
@@ -61,6 +61,9 @@ jobs:
             bash scripts/deploy.sh "$ENV"
             exit 0
           fi
+
+          # Desired-state config (target servers, products) — idempotent, apply every run
+          bash scripts/deploy.sh "$ENV" config
 
           base="${{ github.event.before }}"
           if [ -z "$base" ] || [ "$base" = "0000000000000000000000000000000000000000" ]; then

@@ -21,10 +21,9 @@ deploy_proxy() {
 }
 
 retry apigeecli targetservers import -f "config/$ENV/targetservers.json" -e "$ENV" -o "$ORG" $FLAGS
-for f in config/"$ENV"/products/*.json; do
-    [ -e "$f" ] || break
-    retry apigeecli products import -f "$f" --upsert -o "$ORG" $FLAGS
-done
+[ -f "config/$ENV/products.json" ] && retry apigeecli products import -f "config/$ENV/products.json" --upsert -o "$ORG" $FLAGS
+
+[ "$NAME" = "config" ] && exit 0
 
 if [ -n "$NAME" ]; then
     if [ -d "sharedflows/$NAME" ]; then
@@ -33,6 +32,7 @@ if [ -n "$NAME" ]; then
         deploy_proxy "$NAME"
     else
         echo "unknown artifact: $NAME (not in sharedflows/ or proxies/)" >&2
+        exit 1
     fi
 else
     for dir in sharedflows/*/; do [ -e "$dir" ] || break; deploy_sharedflow "$(basename "$dir")"; done
